@@ -1,7 +1,7 @@
 {
   "name": "maximumsats-mcp",
-  "version": "1.0.0",
-  "description": "MCP server for Maximum Sats Bitcoin AI tools — text generation, image generation, Web of Trust scoring, and Lightning Network analysis. Pay-per-use via Lightning L402.",
+  "version": "2.0.0",
+  "description": "MCP server for Bitcoin AI tools and Nostr Web of Trust scoring (12 tools). Pay-per-use via Lightning L402. 50 free WoT queries/day.",
   "main": "dist/index.js",
   "bin": {
     "maximumsats-mcp": "dist/index.js"
