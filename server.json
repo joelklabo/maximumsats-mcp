@@ -1,0 +1,12 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.joelklabo/maximumsats-mcp",
+  "description": "12 tools for Bitcoin AI and Nostr Web of Trust scoring. Ask Bitcoin questions, generate images, check trust scores, detect Sybil accounts, analyze follow quality, find trust paths, and more. Native Lightning L402 micropayments.",
+  "title": "Maximum Sats",
+  "websiteUrl": "https://maximumsats.com",
+  "repository": {
+    "url": "https://github.com/joelklabo/maximumsats-mcp",
+    "source": "github"
+  },
+  "version": "2.0.0"
+}
