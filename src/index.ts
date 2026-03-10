@@ -65,7 +65,16 @@ function formatL402(data: Record<string, unknown>): string {
     const invoice = l402?.payment_request || (data as Record<string, string>).invoice;
     const hash = l402?.payment_hash || (data as Record<string, string>).payment_hash;
     const amount = l402?.price_sats || (data as Record<string, string>).amount_sats;
-    return `Payment required: ${amount} sats\n\nLightning invoice: ${invoice}\n\nAfter paying, retry the same tool call with payment_hash: ${hash}`;
+    return `⚡ Payment Required: ${amount} sats
+
+🔗 Click or copy this Lightning invoice:
+lightning:${invoice}
+
+💳 After paying, retry this tool with:
+  payment_hash: "${hash}"
+
+Or add to request headers:
+  Authorization: L402 ${hash}`;
   }
   return JSON.stringify(data, null, 2);
 }
