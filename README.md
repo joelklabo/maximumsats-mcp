@@ -65,19 +65,22 @@ Or add to your MCP client config:
 
 MaximumSats is purpose-built for the **Secure & Govern MCP** track:
 
-### 1. Paid API Access Control
-Every endpoint can be gated behind payment. Example:
-```bash
-# First request returns 402 with Lightning invoice
-curl -X POST https://maximumsats.com/api/dvm \
-  -H "Content-Type: application/json" \
-  -d '{"prompt":"calculate reputation for npub1..."}'
-# Returns: HTTP 402 + {"invoice": "lnbc..."}
+### 1. Paid API Access Control — One Payment, One Retry
+Every endpoint can be gated behind payment. The L402 flow is simple:
 
-# After paying invoice, retry with payment_hash
+```bash
+# Request returns HTTP 402 with Lightning invoice
 curl -X POST https://maximumsats.com/api/dvm \
   -H "Content-Type: application/json" \
-  -d '{"prompt":"calculate reputation for npub1...","payment_hash":"<hash>"}'
+  -d '{"prompt":"hello"}'
+# Returns: {"error":"Payment required","payment_request":"lnbc21...","payment_hash":"abc123","amount_sats":21}
+
+# Pay the invoice in your Lightning wallet, then retry with payment_hash in Authorization header:
+curl -X POST https://maximumsats.com/api/dvm \
+  -H "Content-Type: application/json" \
+  -H "Authorization: abc123" \
+  -d '{"prompt":"hello"}'
+# Returns: {"status":"success","data":{...}}
 ```
 
 ### 2. Sybil Resistance with WoT
@@ -119,6 +122,27 @@ All payment flows through Lightning Network — no blockchain bloat.
 - [wot.klabo.world/openapi.json](https://wot.klabo.world/openapi.json) — OpenAPI 3.0 spec
 
 ## Quick Examples
+
+### Get Started: One Payment, One Retry L402 Flow
+
+The MaximumSats API uses L402 — here's exactly how to pay and get results:
+
+```bash
+# Step 1: Request (returns 402 with Lightning invoice)
+curl -X POST "https://maximumsats.com/api/bolt11-decode" \
+  -H "Content-Type: application/json" \
+  -d '{"invoice":"lnbc1..."}'
+
+# Response: {"error":"Payment required","payment_request":"lnbc...","payment_hash":"abc123...","amount_sats":21}
+
+# Step 2: Pay the invoice in your Lightning wallet, then retry with payment_hash:
+curl -X POST "https://maximumsats.com/api/bolt11-decode" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: abc123..." \
+  -d '{"invoice":"lnbc1..."}'
+
+# Response: {"status":"success","data":{...}}
+```
 
 ### Check a user's reputation before paying a bounty
 ```bash
